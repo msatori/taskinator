@@ -200,6 +200,9 @@ var dropTaskHandler = function(event) {
     var id = event.dataTransfer.getData("text/plain");
     var draggableElement = document.querySelector("[data-task-id='" + id + "']");
     var dropZoneEl = event.target.closest(".task-list");
+    
+    dropZoneEl.removeAttribute("style");
+
     var statusType = dropZoneEl.id;
     //set status of task based on dropZone id
     var statusSelectEl = draggableElement.querySelector("select[name='status-change']");
@@ -220,6 +223,7 @@ var dropZoneDragHandler = function(event) {
     var taskListEl = event.target.closest(".task-list");
     if (taskListEl) {
         event.preventDefault();
+        taskListEl.setAttribute("style", "background: rgba(68, 233, 255, 0.7); border-style: dashed;");
        
     }
   };
@@ -231,6 +235,15 @@ var dragTaskHandler = function(event) {
   console.log("getId", getId, typeof getId);
 };
 
+var dragLeaveHandler = function(event) {
+    var taskListEl = event.target.closest(".task-list");
+  
+    if (taskListEl) {
+      event.target.closest(".task-list").removeAttribute("style");
+    }
+  };
+  
+
 
 //Event Listeners
 formEl.addEventListener("submit", taskFormHandler);
@@ -240,3 +253,4 @@ pageContentEL.addEventListener("change", taskstatusChangeHandler);
 pageContentEL.addEventListener("dragstart", dragTaskHandler);
 pageContentEL.addEventListener("dragover", dropZoneDragHandler);
 pageContentEL.addEventListener("drop", dropTaskHandler);
+pageContentEL.addEventListener("dragleave", dragLeaveHandler);
